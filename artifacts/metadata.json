@@ -1,0 +1,150 @@
+{
+  "dimension": 384,
+  "metadata": [
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "Basic Regular Expressions Text Processin g Regular expressions are used everywhere \u25e6 Part of every text processing task \u25e6 Not a general NLP solution (for that we use large NLP systems we will see in later lectures) \u25e6 But very useful as part of those systems (e.g., for pre- processing or text formatting) \u25e6 Necessary for data analysis of text data \u25e6 A widely used tool in industry and academics 2 Regular expressions A formal language for specifying text strings How can we search for mentions of these cute animals in text? \u25e6 woodchuck \u25e6 woodchucks \u25e6 Woodchuck \u25e6 Woodchucks \u25e6 Groundhog \u25e6 groundhogs Regular Expressions: Disjunctions Letters inside square brackets [] Pattern Matches [wW]oodchuck",
+      "chunk_id": 0
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "Groundhog \u25e6 groundhogs Regular Expressions: Disjunctions Letters inside square brackets [] Pattern Matches [wW]oodchuck Woodchuck, woodchuck [1234567890] Any one digit Ranges using the dash [A-Z] Pattern Matches [A-Z] An upper case letter Drenched Blossoms [a-z] A lower case letter my beans were impatient [0-9] A single digit Chapter 1: Down the Rabbit Hole Regular Expressions: Negation in Disjunction Carat as first character in [] negates the list \u25e6 Note: Carat means negation only when it's first in [] \u25e6 Special characters (., *, +, ?) lose their special meaning inside [] Pattern Matches Examples [^A-Z] Not an upper case letter Oyfn pripetchik [^Ss] Neither \u2018S\u2019 nor \u2018s\u2019 I have no exquisite",
+      "chunk_id": 1
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "] Pattern Matches Examples [^A-Z] Not an upper case letter Oyfn pripetchik [^Ss] Neither \u2018S\u2019 nor \u2018s\u2019 I have no exquisite reason\u201d [^.] Not a period Our resident Djinn [e^] Either e or ^ Look up ^ now Regular Expressions: Convenient aliases Pattern Expansion Matches Examples \\d [0-9] Any digit Fahreneit 451 \\D [^0-9] Any non-digit Blue Moon \\w [a-ZA-Z0-9_] Any alphanumeric or _ Daiyu \\W [^\\w] Not alphanumeric or _ Look! \\s [ \\r\\t\\n\\f] Whitespace (space, tab) Look\u2423up \\S [^\\s] Not whitespace Look up Regular Expressions: More Disjunction Groundhog is another name for woodchuck! The pipe symbol | for disjunction Pattern Matches groundhog|woodchuck woodchuck yours|mine yours a|b|c = [abc]",
+      "chunk_id": 2
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "oodchuck! The pipe symbol | for disjunction Pattern Matches groundhog|woodchuck woodchuck yours|mine yours a|b|c = [abc] [gG]roundhog|[Ww]oodchuck Woodchuck Wildcards, optionality, repetition: . ? * + Pattern Matches Examples beg.n Any char begin begun beg3n beg n woodchucks? Optional s woodchuck woodchucks to* 0 or more of t to too tooo previous char Stephen C Kleene to+ 1 or more of to too tooo previous char toooo Kleene *, Kleene + Regular Expressions: Anchors ^ $ Pattern Matches ^[A-Z] Palo Alto ^[^A-Za-z] 1 \u201cHello\u201d \\.$ The end. .$ The end? The end! Regular Expressions: Examples Regular Expressions: Examples Regular Expressions: Examples A note about Python regular expressions \u25e6 Regex",
+      "chunk_id": 3
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "ns: Examples Regular Expressions: Examples Regular Expressions: Examples A note about Python regular expressions \u25e6 Regex and Python both use backslash \"\\\" for special characters. You must type extra backslashes! \u25e6 \"\\\\d+\" to search for 1 or more digits \u25e6 \"\\n\" in Python means the \"newline\" character, not a \"slash\" followed by an \"n\". Need \"\\\\n\" for two characters. \u25e6 Instead: use Python's raw string notation for regex: \u25e6 r\"[tT]he\" \u25e6 r\"\\d+\" matches one or more digits \u25e6 instead of \"\\\\d+\" 13 The iterative process of writing regex's Find me all instances of the word \u201cthe\u201d in a text. the Misses capitalized examples [tT]he Incorrectly returns other or Theology \\W[tT]he\\W False positives and false",
+      "chunk_id": 4
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "text. the Misses capitalized examples [tT]he Incorrectly returns other or Theology \\W[tT]he\\W False positives and false negatives The process we just went through was based on fixing two kinds of errors: 1. Not matching things that we should have matched (The) False negatives 2. Matching strings that we should not have matched (there, then, other) False positives Characterizing work on NLP In NLP we are always dealing with these kinds of errors. Reducing the error rate for an application often involves two antagonistic efforts: \u25e6 Increasing coverage (or recall) (minimizing false negatives). \u25e6 Increasing accuracy (or precision) (minimizing false positives) Regular expressions play a",
+      "chunk_id": 5
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "inimizing false negatives). \u25e6 Increasing accuracy (or precision) (minimizing false positives) Regular expressions play a surprisingly large role Widely used in both academics and industry 1. Part of most text processing tasks, even for big neural language model pipelines \u25e6 including text formatting and pre-processing 2. Very useful for data analysis of any text data 17 Basic Regular Expressions Text Processin g Basic More Regular Expressions: Text Substitutions and ELIZA Processin g Substitutions Substitution in Python and UNIX commands: s/regexp1/pattern/ e.g.: s/colour/color/ Capture Groups \u2022 Say we want to put angles around all numbers: the 35 boxes \uf0e0the <35> boxes \u2022 Use parens () to",
+      "chunk_id": 6
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "ur/color/ Capture Groups \u2022 Say we want to put angles around all numbers: the 35 boxes \uf0e0the <35> boxes \u2022 Use parens () to \"capture\" a pattern into a numbered register (1, 2, 3\u2026) \u2022 Use \\1 to refer to the contents of the register s/([0-9]+)/<\\1>/ Capture groups: multiple registers /the (.*)er they (.*), the \\1er we \\2/ Matches the faster they ran, the faster we ran But not the faster they ran, the faster we ate But suppose we don't want to capture? Parentheses have a double function: grouping terms, and capturing Non-capturing groups: add a ?: after paren: /(?:some|a few) (people|cats) like some \\1/ matches \u25e6 some cats like some cats but not \u25e6 some cats like some some Lookahead assertions (?=",
+      "chunk_id": 7
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "eople|cats) like some \\1/ matches \u25e6 some cats like some cats but not \u25e6 some cats like some some Lookahead assertions (?= pattern) is true if pattern matches, but is zero-width; doesn't advance character pointer (?! pattern) true if a pattern does not match How to match, at the beginning of a line, any single word that doesn\u2019t start with \u201cVolcano\u201d: /\u02c6(?!Volcano)[A-Za-z]+/ Simple Application: ELIZA Early NLP system that imitated a Rogerian psychotherapist \u25e6 Joseph Weizenbaum, 1966. Uses pattern matching to match, e.g.,: \u25e6 \u201cI need X\u201d and translates them into, e.g. \u25e6 \u201cWhat would it mean to you if you got X? Simple Application: ELIZA Men are all alike. IN WHAT WAY They're always bugging us about",
+      "chunk_id": 8
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "ld it mean to you if you got X? Simple Application: ELIZA Men are all alike. IN WHAT WAY They're always bugging us about something or other. CAN YOU THINK OF A SPECIFIC EXAMPLE Well, my friend made me come here. YOUR FRIEND MADE YOU COME HERE He says I'm depressed much of the time. I AM SORRY TO HEAR YOU ARE DEPRESSED How ELIZA works s/.* I\u2019M (depressed|sad) .*/I AM SORRY TO HEAR YOU ARE \\1/ s/.* I AM (depressed|sad) .*/WHY DO YOU THINK YOU ARE \\1/ s/.* all .*/IN WHAT WAY?/ s/.* always .*/CAN YOU THINK OF A SPECIFIC EXAMPLE?/ Words and Corpora Basic Text Processing How many words in a sentence? \"I do uh main- mainly business data processing\" \u25e6 Fragments, filled pauses \"Seuss\u2019s cat in the",
+      "chunk_id": 9
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "many words in a sentence? \"I do uh main- mainly business data processing\" \u25e6 Fragments, filled pauses \"Seuss\u2019s cat in the hat is different from other cats!\" \u25e6 Lemma: same stem, part of speech, rough word sense \u25e6 cat and cats = same lemma \u25e6 Wordform: the full inflected surface form \u25e6 cat and cats = different wordforms How many words in a sentence? they lay back on the San Francisco grass and looked at the stars and their Type: an element of the vocabulary. Token: an instance of that type in running text. How many? \u25e6 15 tokens (or 14) \u25e6 13 types (or 12) (or 11?) How many words in a corpus? N = number of tokens V = vocabulary = set of types, |V| is size of vocabulary Heaps Law = Herdan's Law =",
+      "chunk_id": 10
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "ds in a corpus? N = number of tokens V = vocabulary = set of types, |V| is size of vocabulary Heaps Law = Herdan's Law = where often .67 < \u03b2 < .75 i.e., vocabulary size grows with > square root of the number of word tokens Tokens = N Types = |V| Switchboard phone conversations 2.4 million 20 thousand Shakespeare 884,000 31 thousand COCA 440 million 2 million Google N-grams 1 trillion 13+ million Corpora Words don't appear out of nowhere! A text is produced by \u2022 a specific writer(s), \u2022 at a specific time, \u2022 in a specific variety, \u2022 of a specific language, \u2022 for a specific function. Corpora vary along dimension like \u25e6 Language: 7097 languages in the world \u25e6 Variety, like African American",
+      "chunk_id": 11
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "fic function. Corpora vary along dimension like \u25e6 Language: 7097 languages in the world \u25e6 Variety, like African American Language varieties. \u25e6 AAE Twitter posts might include forms like \"iont\" (I don't) \u25e6 Code switching, e.g., Spanish/English, Hindi/English: S/E: Por primera vez veo a @username actually being hateful! It was beautiful:) [For the first time I get to see @username actually being hateful! it was beautiful:) ] H/E: dost tha or ra- hega ... dont wory ... but dherya rakhe [\u201che was and will remain a friend ... don\u2019t worry ... but have faith\u201d] \u25e6 Genre: newswire, fiction, scientific articles, Wikipedia \u25e6 Author Demographics: writer's age, gender, ethnicity, SES Corpus datasheets",
+      "chunk_id": 12
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "e, fiction, scientific articles, Wikipedia \u25e6 Author Demographics: writer's age, gender, ethnicity, SES Corpus datasheets Gebru et al (2020), Bender and Friedman (2018) Motivation: \u2022 Why was the corpus collected? \u2022 By whom? \u2022 Who funded it? Situation: In what situation was the text written? Collection process: If it is a subsample how was it sampled? Was there consent? Pre-processing? +Annotation process, language variety, demographics, etc. Word tokenization Basic Text Processing Text Normalization Every NLP task requires text normalization: 1. Tokenizing (segmenting) words 2. Normalizing word formats 3. Segmenting sentences Space-based tokenization A very simple way to tokenize \u25e6 For",
+      "chunk_id": 13
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": ") words 2. Normalizing word formats 3. Segmenting sentences Space-based tokenization A very simple way to tokenize \u25e6 For languages that use space characters between words \u25e6 Arabic, Cyrillic, Greek, Latin, etc., based writing systems \u25e6 Segment off a token between instances of spaces Unix tools for space-based tokenization \u25e6 The \"tr\" command \u25e6 Inspired by Ken Church's UNIX for Poets \u25e6 Given a text file, output the word tokens and their frequencies Simple Tokenization in UNIX (Inspired by Ken Church\u2019s UNIX for Poets.) Given a text file, output the word tokens and their frequencies tr -sc \u2019A-Za-z\u2019 \u2019\\n\u2019 < shakes.txt Change all non-alpha to newlines | sort Sort in alphabetical order | uniq \u2013c",
+      "chunk_id": 14
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "equencies tr -sc \u2019A-Za-z\u2019 \u2019\\n\u2019 < shakes.txt Change all non-alpha to newlines | sort Sort in alphabetical order | uniq \u2013c Merge and count each type 1945 A 72 AARON 19 ABBESS 25 Aaron 5 ABBOT 6 Abate ... ... 1 Abates 5 Abbess 6 Abbey 3 Abbot .... \u2026 The first step: tokenizing tr -sc \u2019A-Za-z\u2019 \u2019\\n\u2019 < shakes.txt | head THE SONNETS by William Shakespeare From fairest creatures We ... The second step: sorting tr -sc \u2019A-Za-z\u2019 \u2019\\n\u2019 < shakes.txt | sort | head A A A A A A A A A ... More counting Merging upper and lower case tr \u2018A-Z\u2019 \u2018a-z\u2019 < shakes.txt | tr \u2013sc \u2018A-Za-z\u2019 \u2018\\n\u2019 | sort | uniq \u2013c Sorting the counts tr \u2018A-Z\u2019 \u2018a-z\u2019 < shakes.txt | tr \u2013sc \u2018A-Za-z\u2019 \u2018\\n\u2019 | sort | uniq \u2013c | sort \u2013n \u2013r 23243 the",
+      "chunk_id": 15
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "| uniq \u2013c Sorting the counts tr \u2018A-Z\u2019 \u2018a-z\u2019 < shakes.txt | tr \u2013sc \u2018A-Za-z\u2019 \u2018\\n\u2019 | sort | uniq \u2013c | sort \u2013n \u2013r 23243 the 22225 i 18618 and 16339 to 15687 of 12780 a 12163 you What happened here? 10839 my 10005 in 8954 d Issues in Tokenization Can't just blindly remove punctuation: \u25e6 m.p.h., Ph.D., AT&T, cap\u2019n \u25e6 prices ($45.55) \u25e6 dates (01/02/06) \u25e6 URLs (http://www.stanford.edu) \u25e6 hashtags (#nlproc) \u25e6 email addresses (someone@cs.colorado.edu) Clitic: a word that doesn't stand on its own \u25e6 \"are\" in we're, French \"je\" in j'ai, \"le\" in l'honneur When should multiword expressions (MWE) be words? \u25e6 New York, rock \u2019n\u2019 roll Tokenization in NLTK Bird, Loper and Klein (2009), Natural Language",
+      "chunk_id": 16
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "xpressions (MWE) be words? \u25e6 New York, rock \u2019n\u2019 roll Tokenization in NLTK Bird, Loper and Klein (2009), Natural Language Processing with Python. O\u2019Reilly Tokenization in languages without spaces Many languages (like Chinese, Japanese, Thai) don't use spaces to separate words! How do we decide where the token boundaries should be? Word tokenization in Chinese Chinese words are composed of characters called \"hanzi\" (or sometimes just \"zi\") Each one represents a meaning unit called a morpheme. Each word has on average 2.4 of them. But deciding what counts as a word is complex and not agreed upon. How to do word tokenization in Chinese? \u59da\u660e\u8fdb\u5165\u603b\u51b3\u8d5b \u201cYao Ming reaches the finals\u201d 3 words? \u59da\u660e \u8fdb\u5165 \u603b\u51b3\u8d5b",
+      "chunk_id": 17
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "ex and not agreed upon. How to do word tokenization in Chinese? \u59da\u660e\u8fdb\u5165\u603b\u51b3\u8d5b \u201cYao Ming reaches the finals\u201d 3 words? \u59da\u660e \u8fdb\u5165 \u603b\u51b3\u8d5b YaoMing reaches finals 5 words? \u59da \u660e \u8fdb\u5165 \u603b \u51b3\u8d5b Yao Ming reaches overall finals 7 characters? (don't use words at all): \u59da \u660e \u8fdb \u5165 \u603b \u51b3 \u8d5b Yao Ming enter enter overall decision game How to do word tokenization in Chinese? \u59da\u660e\u8fdb\u5165\u603b\u51b3\u8d5b \u201cYao Ming reaches the finals\u201d 3 words? \u59da\u660e \u8fdb\u5165 \u603b\u51b3\u8d5b YaoMing reaches finals 5 words? \u59da \u660e \u8fdb\u5165 \u603b \u51b3\u8d5b Yao Ming reaches overall finals 7 characters? (don't use words at all): \u59da \u660e \u8fdb \u5165 \u603b \u51b3 \u8d5b Yao Ming enter enter overall decision game How to do word tokenization in Chinese? \u59da\u660e\u8fdb\u5165\u603b\u51b3\u8d5b \u201cYao Ming reaches the finals\u201d 3 words? \u59da\u660e \u8fdb\u5165 \u603b\u51b3\u8d5b YaoMing reaches finals 5 words? \u59da \u660e \u8fdb\u5165",
+      "chunk_id": 18
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "tokenization in Chinese? \u59da\u660e\u8fdb\u5165\u603b\u51b3\u8d5b \u201cYao Ming reaches the finals\u201d 3 words? \u59da\u660e \u8fdb\u5165 \u603b\u51b3\u8d5b YaoMing reaches finals 5 words? \u59da \u660e \u8fdb\u5165 \u603b \u51b3\u8d5b Yao Ming reaches overall finals 7 characters? (don't use words at all): \u59da \u660e \u8fdb \u5165 \u603b \u51b3 \u8d5b Yao Ming enter enter overall decision game How to do word tokenization in Chinese? \u59da\u660e\u8fdb\u5165\u603b\u51b3\u8d5b \u201cYao Ming reaches the finals\u201d 3 words? \u59da\u660e \u8fdb\u5165 \u603b\u51b3\u8d5b YaoMing reaches finals 5 words? \u59da \u660e \u8fdb\u5165 \u603b \u51b3\u8d5b Yao Ming reaches overall finals 7 characters? (don't use words at all): \u59da \u660e \u8fdb \u5165 \u603b \u51b3 \u8d5b Yao Ming enter enter overall decision game Word tokenization / segmentation So in Chinese it's common to just treat each character (zi) as a token. \u2022 So the segmentation step is very simple In other languages (like",
+      "chunk_id": 19
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "common to just treat each character (zi) as a token. \u2022 So the segmentation step is very simple In other languages (like Thai and Japanese), more complex word segmentation is required. \u2022 The standard algorithms are neural sequence models trained by supervised machine learning. Byte Pair Encoding Basic Text Processing Another option for text tokenization Instead of \u2022 white-space segmentation \u2022 single-character segmentation Use the data to tell us how to tokenize. Subword tokenization (because tokens can be parts of words as well as whole words) Subword tokenization Three common algorithms: \u25e6 Byte-Pair Encoding (BPE) (Sennrich et al., 2016) \u25e6 Unigram language modeling tokenization (Kudo,",
+      "chunk_id": 20
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "ee common algorithms: \u25e6 Byte-Pair Encoding (BPE) (Sennrich et al., 2016) \u25e6 Unigram language modeling tokenization (Kudo, 2018) \u25e6 WordPiece (Schuster and Nakajima, 2012) All have 2 parts: \u25e6 A token learner that takes a raw training corpus and induces a vocabulary (a set of tokens). \u25e6 A token segmenter that takes a raw test sentence and tokenizes it according to that vocabulary Byte Pair Encoding (BPE) token learner Let vocabulary be the set of all individual characters = {A, B, C, D,\u2026, a, b, c, d\u2026.} Repeat: \u25e6 Choose the two symbols that are most frequently adjacent in the training corpus (say 'A', 'B') \u25e6 Add a new merged symbol 'AB' to the vocabulary \u25e6 Replace every adjacent 'A' 'B' in the",
+      "chunk_id": 21
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "training corpus (say 'A', 'B') \u25e6 Add a new merged symbol 'AB' to the vocabulary \u25e6 Replace every adjacent 'A' 'B' in the corpus with 'AB'. Until k merges have been done. BPE token learner algorithm Byte Pair Encoding (BPE) Addendum Most subword algorithms are run inside space- separated tokens. So we commonly first add a special end-of-word symbol '__' before space in training corpus Next, separate into letters. BPE token learner Original (very fascinating\ud83d\ude44) corpus: low low low low low lowest lowest newer newer newer newer newer newer wider wider wider new new Add end-of-word tokens, resulting in this vocabulary: representation BPE token learner Merge e r to er BPE Merge er _ to er_ BPE",
+      "chunk_id": 22
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "of-word tokens, resulting in this vocabulary: representation BPE token learner Merge e r to er BPE Merge er _ to er_ BPE Merge n e to ne BPE The next merges are: BPE token segmenter algorithm On the test data, run each merge learned from the training data: \u25e6 Greedily \u25e6 In the order we learned them \u25e6 (test frequencies don't play a role) So: merge every e r to er, then merge er _ to er_, etc. Result: \u25e6 Test set \"n e w e r _\" would be tokenized as a full word \u25e6 Test set \"l o w e r _\" would be two tokens: \"low er_\" Properties of BPE tokens Usually include frequent words And frequent subwords \u2022 Which are often morphemes like -est or \u2013er A morpheme is the smallest meaning-bearing unit of a",
+      "chunk_id": 23
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "And frequent subwords \u2022 Which are often morphemes like -est or \u2013er A morpheme is the smallest meaning-bearing unit of a language \u2022 unlikeliest has 3 morphemes un-, likely, and -est Word Normalization and other issues Basic Text Processing Word Normalization Putting words/tokens in a standard format \u25e6 U.S.A. or USA \u25e6 uhhuh or uh-huh \u25e6 Fed or fed \u25e6 am, is, be, are Case folding Applications like IR: reduce all letters to lower case \u25e6 Since users tend to use lower case \u25e6 Possible exception: upper case in mid-sentence? \u25e6 e.g., General Motors \u25e6 Fed vs. fed \u25e6 SAIL vs. sail For sentiment analysis, MT, Information extraction \u25e6 Case is helpful (US versus us is important) Lemmatization Represent all",
+      "chunk_id": 24
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "sentiment analysis, MT, Information extraction \u25e6 Case is helpful (US versus us is important) Lemmatization Represent all words as their lemma, their shared root = dictionary headword form: \u25e6 am, are, is \uf0ae be \u25e6 car, cars, car's, cars' \uf0ae car \u25e6 Spanish quiero (\u2018I want\u2019), quieres (\u2018you want\u2019) \uf0ae querer \u2018want' \u25e6 He is reading detective stories \uf0ae He be read detective story Lemmatization is done by Morphological Parsing Morphemes: \u25e6 The small meaningful units that make up words \u25e6 Stems: The core meaning-bearing units \u25e6 Affixes: Parts that adhere to stems, often with grammatical functions Morphological Parsers: \u25e6 Parse cats into two morphemes cat and s \u25e6 Parse Spanish amaren (\u2018if in the future they",
+      "chunk_id": 25
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "unctions Morphological Parsers: \u25e6 Parse cats into two morphemes cat and s \u25e6 Parse Spanish amaren (\u2018if in the future they would love\u2019) into morpheme amar \u2018to love\u2019, and the morphological features 3PL and future subjunctive. Stemming Reduce terms to stems, chopping off affixes crudely This was not the map we Thi wa not the map we found in Billy Bones\u2019s found in Billi Bone s chest chest, but an accurate but an accur copi complet copy, complete in all in all thing name and things-names and heights height and sound with the and soundings-with the singl except of the red single exception of the cross and the written note red crosses and the . written notes. Porter Stemmer Based on a series of",
+      "chunk_id": 26
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "gle exception of the cross and the written note red crosses and the . written notes. Porter Stemmer Based on a series of rewrite rules run in series \u25e6 A cascade, in which output of each pass fed to next pass Some sample rules: Dealing with complex morphology is necessary for many languages \u25e6 e.g., the Turkish word: \u25e6 Uygarlastiramadiklarimizdanmissinizcasina \u25e6 `(behaving) as if you are among those whom we could not civilize\u2019 \u25e6 Uygar `civilized\u2019 + las `become\u2019 + tir `cause\u2019 + ama `not able\u2019 + dik `past\u2019 + lar \u2018plural\u2019 + imiz \u2018p1pl\u2019 + dan \u2018abl\u2019 + mis \u2018past\u2019 + siniz \u20182pl\u2019 + casina \u2018as if\u2019 Sentence Segmentation !, ? mostly unambiguous but period \u201c.\u201d is very ambiguous \u25e6 Sentence boundary \u25e6",
+      "chunk_id": 27
+    },
+    {
+      "source": "Regular Expressions-Chapt#2.pdf",
+      "chunk": "l\u2019 + casina \u2018as if\u2019 Sentence Segmentation !, ? mostly unambiguous but period \u201c.\u201d is very ambiguous \u25e6 Sentence boundary \u25e6 Abbreviations like Inc. or Dr. \u25e6 Numbers like .02% or 4.3 Common algorithm: Tokenize first: use rules or ML to classify a period as either (a) part of the word or (b) a sentence-boundary. \u25e6 An abbreviation dictionary can help Sentence segmentation can then often be done by rules based on this tokenization.",
+      "chunk_id": 28
+    }
+  ]
+}
