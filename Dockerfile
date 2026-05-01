@@ -9,11 +9,11 @@ ENV PIP_DEFAULT_TIMEOUT=180
 WORKDIR /app
 
 COPY requirements.txt .
-COPY torch-2.3.1+cpu-cp311-cp311-linux_x86_64.whl /tmp/torch.whl
+COPY torch-2.3.1+cpu-cp311-cp311-linux_x86_64.whl /tmp/torch-2.3.1+cpu-cp311-cp311-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --retries 10 --timeout 180 --upgrade pip && \
-    pip install --retries 10 --timeout 180 /tmp/torch.whl && \
+    pip install --retries 10 --timeout 180 /tmp/torch-2.3.1+cpu-cp311-cp311-linux_x86_64.whl && \
     pip install --retries 10 --timeout 180 --prefer-binary -r requirements.txt
 
 COPY app.py ./app.py
