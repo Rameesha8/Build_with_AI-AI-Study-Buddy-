@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 ai-study-buddy.tar
+
+
+torch-2.3.1+cpu-cp311-cp311-linux_x86_64.whl
+
