@@ -16,13 +16,19 @@ from fastapi import Cookie, FastAPI, File, HTTPException, Request, Response, Upl
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from google import genai
+from dotenv import load_dotenv
+from groq import Groq
 from pydantic import BaseModel, Field
 from sentence_transformers import SentenceTransformer
 
+load_dotenv()
+
 APP_TITLE = "AI Study Buddy"
 APP_VERSION = "1.0.0"
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini").lower()
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "all-MiniLM-L6-v2")
-ANSWER_MODEL_NAME = os.getenv("ANSWER_MODEL_NAME", "gemini-2.5-flash")
+DEFAULT_ANSWER_MODEL = "llama-3.3-70b-versatile" if LLM_PROVIDER == "groq" else "gemini-2.5-flash"
+ANSWER_MODEL_NAME = os.getenv("ANSWER_MODEL_NAME", DEFAULT_ANSWER_MODEL)
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "700"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "120"))
 DEFAULT_TOP_K = int(os.getenv("TOP_K", "4"))
@@ -36,7 +42,12 @@ METADATA_FILE = INDEX_DIR / "metadata.json"
 
 embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
 gemini_api_key = os.getenv("GEMINI_API_KEY")
-llm_client = genai.Client(api_key=gemini_api_key) if gemini_api_key else None
+groq_api_key = os.getenv("GROQ_API_KEY")
+llm_client = None
+if LLM_PROVIDER == "groq" and groq_api_key:
+    llm_client = Groq(api_key=groq_api_key)
+elif LLM_PROVIDER == "gemini" and gemini_api_key:
+    llm_client = genai.Client(api_key=gemini_api_key)
 
 HTML_PAGE = """
 <!DOCTYPE html>
@@ -417,20 +428,33 @@ def build_context(results: List[SearchResult]) -> str:
 def answer_question(question: str, results: List[SearchResult]) -> Dict[str, Any]:
     context = build_context(results)
     if not llm_client:
-        return {'answer': 'Gemini is not configured yet. Retrieval worked, so use the retrieved chunks below or set GEMINI_API_KEY to enable answer generation.', 'context': context, 'model': None}
-    prompt = (
+        key_name = "GROQ_API_KEY" if LLM_PROVIDER == "groq" else "GEMINI_API_KEY"
+        return {'answer': f'{LLM_PROVIDER.title()} is not configured yet. Retrieval worked, so use the retrieved chunks below or set {key_name} to enable answer generation.', 'context': context, 'model': None}
+    system_prompt = (
         "You are an AI study buddy.\n"
         "Answer using only the provided study context.\n"
         "If the answer is not present in the notes, say so clearly.\n\n"
         "Write in clean plain text.\n"
         "Prefer short headings and bullet points.\n"
         "Do not use markdown symbols like **, *, or ```.\n"
-        "Be concise and classroom-friendly.\n\n"
+        "Be concise and classroom-friendly."
+    )
+    user_prompt = (
         f"Question:\n{question}\n\nStudy Context:\n{context}"
     )
+    if LLM_PROVIDER == "groq":
+        response = llm_client.chat.completions.create(
+            model=ANSWER_MODEL_NAME,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+        text = response.choices[0].message.content if response.choices else ''
+        return {'answer': clean_answer_text(text or ''), 'context': context, 'model': ANSWER_MODEL_NAME}
     response = llm_client.models.generate_content(
         model=ANSWER_MODEL_NAME,
-        contents=prompt,
+        contents=f"{system_prompt}\n\n{user_prompt}",
     )
     return {'answer': clean_answer_text(response.text or ''), 'context': context, 'model': ANSWER_MODEL_NAME}
 
@@ -458,6 +482,7 @@ def health() -> Dict[str, Any]:
         'status': 'ok',
         'embedding_model': EMBEDDING_MODEL_NAME,
         'answer_generation_enabled': bool(llm_client),
+        'llm_provider': LLM_PROVIDER,
         'answer_model': ANSWER_MODEL_NAME,
         'saved_index_loaded': bool(saved_index.metadata),
         'saved_index_stats': saved_index.stats(),
